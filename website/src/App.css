@@ -16,7 +16,7 @@
 }
 
 .App-content{
-  background-color: rgb(43, 43, 43);
+  background-color: rgb(56, 55, 55);
   min-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -26,16 +26,18 @@
   color: rgb(22, 22, 22);
 }
 
-.Selected-image{
+#Selected-image{
   height: 50vh;
   width: auto;
+  filter: drop-shadow(0 0 0.5rem rgb(22, 22, 22));
 }
 
 .Image-input{
   color: rgb(220, 215, 201);
   background-color: rgb(38, 36, 59);
   filter: drop-shadow(0 0 0.5rem rgb(22, 22, 22));
-  padding:2em;
+  padding:1em;
+  border-radius: 1em;
 }
 
 .Image-input-field{

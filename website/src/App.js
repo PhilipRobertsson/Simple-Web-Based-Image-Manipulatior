@@ -7,8 +7,23 @@ function App() {
   
   const handleFileChange = (e) =>{
     console.log(e.target.files)
-    setSelectedImage(URL.createObjectURL(e.target.files[0]))
+    if(e.target.files.length != 0){
+      setSelectedImage(URL.createObjectURL(e.target.files[0]))
+    }else{
+      console.log("No file chosen")
+    }
   }
+
+  useEffect(()=>{
+    if(document.getElementById("Selected-image")){
+      let imgContainer = document.getElementById("Selected-image")
+      if(!selectedImage){
+        imgContainer.style.display = "none"
+      }else{
+        imgContainer.style.display = "flex"
+      }
+    }
+  },[selectedImage])
 
 
 
@@ -18,7 +33,7 @@ function App() {
         <h1>Title</h1>
       </header>
       <div className="App-content">
-        <img className="Selected-image" src={selectedImage}/>
+        <img id="Selected-image" src={selectedImage}/>
         <label className="Image-input">
           <input className="Image-input-field" type="file" accept="image/*" onChange={handleFileChange}></input>
           <a>Select image</a>
