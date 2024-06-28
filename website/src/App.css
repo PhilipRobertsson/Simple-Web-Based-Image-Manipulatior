@@ -10,7 +10,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
+  text-align: center;
   color: rgb(220, 215, 201);
   filter: drop-shadow(0 0 0.5rem rgb(22, 22, 22));
 }
@@ -43,3 +44,49 @@
 .Image-input-field{
   display: none;
 }
+
+.Menus-container{
+  position: fixed;
+  top:0;
+  display: flex;
+  width: 100vw;
+  pointer-events: none
+}
+
+#Menu-window{
+  display: none;
+  justify-content: flex-start;
+  pointer-events: auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: flex-start;
+  align-items: center;
+  align-content: flex-start;
+  text-align: center;
+  font-size: calc(2px + 2vmin);
+  color: rgb(220, 215, 201);
+  width: 20vw;
+  background-color: rgb(50, 60, 69);
+  height: 100vh;
+  filter: drop-shadow(0 0 0.5rem rgb(22, 22, 22));
+  border-radius: 0 5em 5em 0;
+  padding: 10px 0 0 0;
+}
+
+.Menu-item{
+  border-style: solid none none none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-width: 1px;
+  padding-top: 5px;
+  width: 100%;
+}
+
+.Close-button{
+  height: 5vh;
+  width:5vw;
+}
+
+@keyframes slideInLeft {0%{transform: translate(-20vw);} 100%{transform: translate(0);}}
+@keyframes slideOutLeft {0%{transform: translate(0);} 100%{transform: translate(-20vw);}}
