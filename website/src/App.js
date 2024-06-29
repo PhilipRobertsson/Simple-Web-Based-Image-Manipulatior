@@ -1,6 +1,7 @@
 import React from 'react'
 import{useState, useEffect} from 'react'
 import imgToCnvs from './imgToCnvs';
+import dithering from './dithering';
 import './App.css';
 
 function App() {
@@ -44,12 +45,17 @@ function App() {
         imgContainer.onload = function (){
           setImageCanvas(imgToCnvs(imgContainer.src))
         }
+        console.log(imageCanvas)
       }
 
       function handleKeyDown(e){
         if(e.code == "Escape"){
           handleMenuChange()
-        }      
+        }
+        if(e.code == "Space"){
+          dithering(imageCanvas)
+          setSelectedImage(imageCanvas.toDataURL())
+        }
       }
 
       document.addEventListener('keydown', handleKeyDown)
@@ -64,6 +70,7 @@ function App() {
 
 
   return (
+    
     <div className="App">
 
       <header className="App-header">

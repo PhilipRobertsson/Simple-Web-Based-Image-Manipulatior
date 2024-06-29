@@ -1,8 +1,5 @@
-import React from 'react'
-import{useState, useEffect} from 'react'
-
 const imgToCnvs = imgBlob =>{
-    let img = new Image()
+    var img = new Image()
     img.src = imgBlob
     var cvs = document.createElement('canvas')
     cvs.width = img.width;
