@@ -11,9 +11,7 @@ function App() {
   const handleFileChange = (e) =>{
     console.log(e.target.files)
     if(e.target.files.length != 0){
-      let url = URL.createObjectURL(e.target.files[0])
-      setSelectedImage(url)
-      
+      setSelectedImage(URL.createObjectURL(e.target.files[0]))
     }else{
       console.log("No file chosen")
     }
@@ -24,14 +22,12 @@ function App() {
     if(document.getElementById("Menu-window")){
       if(menuOut){
         setMenuOut(false);
-        console.log("Menu In");
         document.getElementById("Menu-window").style.animation = "slideOutLeft 0.2s linear";
         setTimeout(function() {
           document.getElementById("Menu-window").style.display="none";
         }, 190);
       }else{
         setMenuOut(true);
-        console.log("Menu Out");
         document.getElementById("Menu-window").style.display="flex";
         document.getElementById("Menu-window").style.animation = "slideInLeft 0.2s linear";
       }
@@ -48,7 +44,6 @@ function App() {
         imgContainer.onload = function (){
           setImageCanvas(imgToCnvs(imgContainer.src))
         }
-        console.log(imageCanvas)
       }
 
       function handleKeyDown(e){
