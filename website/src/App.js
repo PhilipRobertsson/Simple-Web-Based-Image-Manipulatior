@@ -11,10 +11,13 @@ function App() {
   const handleFileChange = (e) =>{
     console.log(e.target.files)
     if(e.target.files.length != 0){
-      setSelectedImage(URL.createObjectURL(e.target.files[0]))
+      let url = URL.createObjectURL(e.target.files[0])
+      setSelectedImage(url)
+      
     }else{
       console.log("No file chosen")
     }
+    
   }
 
   const handleMenuChange = () =>{
@@ -36,27 +39,25 @@ function App() {
   }
 
   useEffect(()=>{
-    let imgCnvs
     if(document.getElementById("Selected-image")){
       let imgContainer = document.getElementById("Selected-image")
       if(!selectedImage){
         imgContainer.style.display = "none"
       }else{
         imgContainer.style.display = "flex"
+        imgContainer.onload = function (){
+          setImageCanvas(imgToCnvs(imgContainer.src))
+        }
+        console.log(imageCanvas)
       }
 
       function handleKeyDown(e){
         if(e.code == "Escape"){
           handleMenuChange()
-        }
-        if(e.code =="Space"){
-          imgCnvs = imgToCnvs(selectedImage)
-          setImageCanvas(imgCnvs)
-        }
-        
+        }      
       }
-      console.log(imageCanvas)
-      document.addEventListener('keydown', handleKeyDown);
+
+      document.addEventListener('keydown', handleKeyDown)
 
         //Remove event listener after use
         return function cleanup() {
