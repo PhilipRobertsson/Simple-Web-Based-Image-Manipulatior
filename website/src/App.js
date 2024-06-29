@@ -1,9 +1,11 @@
 import React from 'react'
 import{useState, useEffect} from 'react'
+import imgToCnvs from './imgToCnvs';
 import './App.css';
 
 function App() {
   const [selectedImage, setSelectedImage] = useState()
+  const [imageCanvas, setImageCanvas] = useState()
   const [menuOut, setMenuOut] = useState(false)
   
   const handleFileChange = (e) =>{
@@ -34,6 +36,7 @@ function App() {
   }
 
   useEffect(()=>{
+    let imgCnvs
     if(document.getElementById("Selected-image")){
       let imgContainer = document.getElementById("Selected-image")
       if(!selectedImage){
@@ -43,12 +46,16 @@ function App() {
       }
 
       function handleKeyDown(e){
-        console.log(e.code)
         if(e.code == "Escape"){
           handleMenuChange()
         }
+        if(e.code =="Space"){
+          imgCnvs = imgToCnvs(selectedImage)
+          setImageCanvas(imgCnvs)
+        }
+        
       }
-
+      console.log(imageCanvas)
       document.addEventListener('keydown', handleKeyDown);
 
         //Remove event listener after use
@@ -56,7 +63,7 @@ function App() {
           document.removeEventListener('keydown', handleKeyDown);
         }
     }
-  },[menuOut,selectedImage])
+  },[menuOut,selectedImage, imageCanvas])
 
 
 
