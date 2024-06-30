@@ -18,6 +18,37 @@ const dithering = (imgCnvs,algorithm) =>{
         matrix[1][0] = 3*0.25
         matrix[1][1] = 1*0.25
         console.log(matrix)
+
+        for(let x = 0; x < imgCnvs.width; x++){
+            for(let y = 0; y<imgCnvs.height; y++){
+                let currentPixel = getPixel(idt, y*idt.width+x)
+                let matPosX = x % matrix.length
+                let matPosY = y % matrix.length
+
+                for(let i = 0; i<3; i++){
+                    let d = matrix[matPosX][matPosY]*256
+                    if(currentPixel[i] <= d){
+                        idt.data[(y*idt.width+x)*4+i] = 0
+                    }else{
+                        idt.data[(y*idt.width+x)*4+i] = 255
+                    }
+                }
+                
+                /* Greyscale
+                let d = matrix[matPosX][matPosY]*256
+                if(currentPixel[0] <= d && currentPixel[1] <=d &&  currentPixel[2] <=d){
+                    idt.data[(y*idt.width+x)*4] = 0
+                    idt.data[(y*idt.width+x)*4+1] = 0
+                    idt.data[(y*idt.width+x)*4+2] = 0
+                }else{
+                    idt.data[(y*idt.width+x)*4] = 255
+                    idt.data[(y*idt.width+x)*4+1] = 255
+                    idt.data[(y*idt.width+x)*4+2] = 255
+                }
+                */
+            }
+        }
+        ctx.putImageData(idt,0,0) 
     }
 
     if(algorithm == "bayer_44"){
@@ -43,13 +74,30 @@ const dithering = (imgCnvs,algorithm) =>{
         matrix[3][2] = 13*0.0625
         matrix[3][3] = 5*0.0625
         console.log(matrix)
+
+        for(let x = 0; x < imgCnvs.width; x++){
+            for(let y = 0; y<imgCnvs.height; y++){
+                let currentPixel = getPixel(idt, y*idt.width+x)
+                let matPosX = x % matrix.length
+                let matPosY = y % matrix.length
+
+                for(let i = 0; i<3; i++){
+                    let d = matrix[matPosX][matPosY]*256
+                    if(currentPixel[i] <= d){
+                        idt.data[(y*idt.width+x)*4+i] = 0
+                    }else{
+                        idt.data[(y*idt.width+x)*4+i] = 255
+                    }
+                }
+            }
+        }
+        ctx.putImageData(idt,0,0) 
     }
 
 
 
 
     console.log(ctx)
-    console.log(idt)
     imgCnvs.ctx = ctx
 }
 
