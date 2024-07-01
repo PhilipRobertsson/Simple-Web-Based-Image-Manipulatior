@@ -13,7 +13,7 @@ function App() {
     label: "Floyd–Steinberg dithering",
     value: "floyd",
     color: false,
-    multiplier: 1.0
+    multiplier: 0.5
   })
 
   // Only used in the select dropdown for dithering
@@ -26,6 +26,7 @@ function App() {
   const handleFileChange = (e) =>{
     console.log(e.target.files)
     if(e.target.files.length != 0){
+      setOldImage(selectedImage)
       setSelectedImage(URL.createObjectURL(e.target.files[0]))
     }else{
       console.log("No file chosen")
@@ -36,6 +37,7 @@ function App() {
   const handleSelectedDitheringOption = () =>{
     let algorithm = document.getElementById("ditheringDropdown").value
     if(algorithm == "Floyd–Steinberg dithering"){
+      document.getElementById("ditheringMultiplierContainer").style.display ="block"
       setSelectedDithering({
         label: "Floyd–Steinberg dithering",
         value: "floyd",
@@ -44,6 +46,7 @@ function App() {
       })
     }
     if(algorithm == "Ordered dithering Bayer 2x2"){
+      document.getElementById("ditheringMultiplierContainer").style.display ="none"
       setSelectedDithering({
         label: "Ordered dithering Bayer 2x2",
         value: "bayer_22",
@@ -52,6 +55,7 @@ function App() {
       })
     }
     if(algorithm == "Ordered dithering Bayer 4x4"){
+      document.getElementById("ditheringMultiplierContainer").style.display ="none"
       setSelectedDithering({
         label: "Ordered dithering Bayer 4x4",
         value: "bayer_44",
@@ -102,7 +106,7 @@ function App() {
         if(e.code == "Escape"){
           handleMenuChange()
         }
-        if(e.code == "Space"){
+        if(e.code =="KeyZ"){
           setSelectedImage(oldImage)
         }
       }
@@ -150,13 +154,13 @@ function App() {
                     <input type="checkbox" id="colorCheck" name="colorCheck" onChange={handleSelectedDitheringOption}/>
                     <label htmlFor="colorCheck">Greyscale</label>
                   </div>
-                  <div>
-                    <a>{selectedDithering.multiplier}</a>
+                  <div id="ditheringMultiplierContainer">
+                  <label htmlFor="ditheringMultiplier">Dithering Multiplier</label><br/>
+                    <a>{selectedDithering.multiplier.toFixed(2)}</a>
                     <input type="range" id="ditheringMultiplier" name="ditheringMultiplier" min="0" max="100" onChange={handleSelectedDitheringOption} />
-                    <label htmlFor="ditheringMultiplier">Dithering Multiplier</label>
                   </div>
                   <div>
-                    <button onClick={handleApplyDithering}>Apply dithering</button>
+                    <button className="applyButton" onClick={handleApplyDithering}>Apply dithering</button>
                   </div>
                 </div>
                 <div className='Menu-item'>
