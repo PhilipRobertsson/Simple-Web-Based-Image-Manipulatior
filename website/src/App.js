@@ -2,6 +2,7 @@ import React from 'react'
 import{useState, useEffect} from 'react'
 import imgToCnvs from './imgToCnvs';
 import dithering from './dithering';
+import noise from './noise';
 import './App.css';
 
 function App() {
@@ -71,7 +72,7 @@ function App() {
   const handleApplyDithering = () =>{
     if(imageCanvas){
       setOldImage(selectedImage)
-      dithering(imageCanvas,selectedDithering.value, selectedDithering.color, selectedDithering.multiplier)
+      dithering(imageCanvas, selectedDithering.value, selectedDithering.color, selectedDithering.multiplier)
       setSelectedImage(imageCanvas.toDataURL())
     }
   }
@@ -111,6 +112,11 @@ function App() {
         }
         if(e.code =="KeyZ"){
           setSelectedImage(oldImage)
+        }
+        if(e.code == "Space"){
+          noise(imageCanvas,true)
+          setSelectedImage(imageCanvas.toDataURL())
+
         }
       }
       document.addEventListener('keydown', handleKeyDown)
@@ -165,6 +171,9 @@ function App() {
                   <div>
                     <button className="applyButton" onClick={handleApplyDithering}>Apply dithering</button>
                   </div>
+                </div>
+                <div className='Menu-item'>
+                  <b>Noise</b>
                 </div>
                 <div className='Menu-item'>
                   <b>Blur</b>

@@ -1,4 +1,4 @@
-import {getPixel, setPixel} from "./pixelOperations"
+import {getPixel} from "./pixelOperations"
 import {divide, abs} from "mathjs"
 
 const dithering = (imgCnvs,algorithm, color, multiplier) =>{
@@ -166,11 +166,6 @@ const dithering = (imgCnvs,algorithm, color, multiplier) =>{
         }
         ctx.putImageData(idt,0,0) 
     }
-
-
-
-
-    console.log(ctx)
     imgCnvs.ctx = ctx
 }
 
