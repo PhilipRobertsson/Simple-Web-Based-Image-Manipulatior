@@ -6,8 +6,22 @@ import './App.css';
 
 function App() {
   const [selectedImage, setSelectedImage] = useState()
+  const[oldImage, setOldImage] = useState()
   const [imageCanvas, setImageCanvas] = useState()
   const [menuOut, setMenuOut] = useState(false)
+  const [selectedDithering, setSelectedDithering] = useState({
+    label: "Floyd–Steinberg dithering",
+    value: "floyd",
+    color: false,
+    multiplier: 1.0
+  })
+
+  // Only used in the select dropdown for dithering
+  const ditheringOptions = [
+    {key: 1, vaule: "floyd", label: "Floyd–Steinberg dithering"},
+    {key: 2, vaule: "bayer_22", label: "Ordered dithering Bayer 2x2"},
+    {key: 3, vaule: "bayer_44", label: "Ordered dithering Bayer 4x4"}
+  ]
   
   const handleFileChange = (e) =>{
     console.log(e.target.files)
@@ -17,6 +31,42 @@ function App() {
       console.log("No file chosen")
     }
     
+  }
+
+  const handleSelectedDitheringOption = () =>{
+    let algorithm = document.getElementById("ditheringDropdown").value
+    if(algorithm == "Floyd–Steinberg dithering"){
+      setSelectedDithering({
+        label: "Floyd–Steinberg dithering",
+        value: "floyd",
+        color : !document.getElementById("colorCheck").checked,
+        multiplier : ((document.getElementById("ditheringMultiplier").value)/100)
+      })
+    }
+    if(algorithm == "Ordered dithering Bayer 2x2"){
+      setSelectedDithering({
+        label: "Ordered dithering Bayer 2x2",
+        value: "bayer_22",
+        color : !document.getElementById("colorCheck").checked,
+        multiplier : ((document.getElementById("ditheringMultiplier").value)/100)
+      })
+    }
+    if(algorithm == "Ordered dithering Bayer 4x4"){
+      setSelectedDithering({
+        label: "Ordered dithering Bayer 4x4",
+        value: "bayer_44",
+        color : !document.getElementById("colorCheck").checked,
+        multiplier : ((document.getElementById("ditheringMultiplier").value)/100)
+      })
+    }
+  }
+
+  const handleApplyDithering = () =>{
+    if(imageCanvas){
+      setOldImage(selectedImage)
+      dithering(imageCanvas,selectedDithering.value, selectedDithering.color, selectedDithering.multiplier)
+      setSelectedImage(imageCanvas.toDataURL())
+    }
   }
 
   const handleMenuChange = () =>{
@@ -53,11 +103,9 @@ function App() {
           handleMenuChange()
         }
         if(e.code == "Space"){
-          dithering(imageCanvas,"floyd", false)
-          setSelectedImage(imageCanvas.toDataURL())
+          setSelectedImage(oldImage)
         }
       }
-
       document.addEventListener('keydown', handleKeyDown)
 
         //Remove event listener after use
@@ -65,7 +113,7 @@ function App() {
           document.removeEventListener('keydown', handleKeyDown);
         }
     }
-  },[menuOut,selectedImage, imageCanvas])
+  },[menuOut,selectedImage, imageCanvas, selectedDithering])
 
 
 
@@ -91,6 +139,25 @@ function App() {
             <h3 style={{paddingLeft:"2em"}}>Menu</h3>
             <div className='Menu-item'>
                   <b>Dithering</b>
+                  <select id="ditheringDropdown" value={selectedDithering.label} onChange={handleSelectedDitheringOption}>
+                  {ditheringOptions.map((option) => (
+                    <option key={option.key} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                  </select>
+                  <div>
+                    <input type="checkbox" id="colorCheck" name="colorCheck" onChange={handleSelectedDitheringOption}/>
+                    <label htmlFor="colorCheck">Greyscale</label>
+                  </div>
+                  <div>
+                    <a>{selectedDithering.multiplier}</a>
+                    <input type="range" id="ditheringMultiplier" name="ditheringMultiplier" min="0" max="100" onChange={handleSelectedDitheringOption} />
+                    <label htmlFor="ditheringMultiplier">Dithering Multiplier</label>
+                  </div>
+                  <div>
+                    <button onClick={handleApplyDithering}>Apply dithering</button>
+                  </div>
                 </div>
                 <div className='Menu-item'>
                   <b>Blur</b>

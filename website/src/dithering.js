@@ -1,7 +1,7 @@
 import {getPixel, setPixel} from "./pixelOperations"
 import {divide, abs} from "mathjs"
 
-const dithering = (imgCnvs,algorithm, color) =>{
+const dithering = (imgCnvs,algorithm, color, multiplier) =>{
     var ctx = imgCnvs.getContext("2d")
     var idt = ctx.getImageData(0,0,imgCnvs.width,imgCnvs.height);
     var matrix
@@ -20,10 +20,10 @@ const dithering = (imgCnvs,algorithm, color) =>{
         return palArr[idx];
     }
 
-    const applyErr = (pixel, error, factor) => {
-        pixel[0] += error[0] * factor
-        pixel[1] += error[1] * factor
-        pixel[2] += error[2] * factor
+    const applyErr = (pixel, error, factor, multiplier) => {
+        pixel[0] += error[0] * factor * multiplier
+        pixel[1] += error[1] * factor * multiplier
+        pixel[2] += error[2] * factor * multiplier
         return(pixel);
     }
 
@@ -34,7 +34,7 @@ const dithering = (imgCnvs,algorithm, color) =>{
         var quantError
         var error
 
-        if(color){
+        if(color){ // Full color or greyscale
             var palArr = [
                 [  0,   0,   0], // black
                 [255, 255, 255], // white
@@ -72,7 +72,7 @@ const dithering = (imgCnvs,algorithm, color) =>{
 
                 id = ((y * idt.width) + (x + 1)) * 4;
                 if(id < idt.data.length){
-                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (7/16))
+                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (7/16), multiplier)
                     idt.data[id] = error[0];
                     idt.data[id + 1] = error[1];
                     idt.data[id + 2] = error[2];
@@ -80,7 +80,7 @@ const dithering = (imgCnvs,algorithm, color) =>{
 
                 id = (((y + 1) * idt.width) + (x - 1)) * 4;
                 if(id < idt.data.length){
-                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (3/16))
+                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (3/16), multiplier)
                     idt.data[id] = error[0];
                     idt.data[id + 1] = error[1];
                     idt.data[id + 2] = error[2];
@@ -88,7 +88,7 @@ const dithering = (imgCnvs,algorithm, color) =>{
 
                 id = (((y + 1) * idt.width) + x) * 4;
                 if(id < idt.data.length){
-                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (5/16))
+                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (5/16), multiplier)
                     idt.data[id] = error[0];
                     idt.data[id + 1] = error[1];
                     idt.data[id + 2] = error[2];
@@ -96,7 +96,7 @@ const dithering = (imgCnvs,algorithm, color) =>{
 
                 id = (((y + 1) * idt.width) + (x + 1)) * 4;
                 if(id < idt.data.length){
-                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (1/16))
+                    error = applyErr([idt.data[id], idt.data[id + 1], idt.data[id + 2]], quantError, (1/16), multiplier)
                     idt.data[id] = error[0];
                     idt.data[id + 1] = error[1];
                     idt.data[id + 2] = error[2];
