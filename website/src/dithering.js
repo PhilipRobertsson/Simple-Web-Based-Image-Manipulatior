@@ -107,15 +107,20 @@ const dithering = (imgCnvs,algorithm, color, multiplier) =>{
 
     }
 
-    if(algorithm == "bayer_22" || algorithm == "bayer_44"){
+    if(algorithm != "floyd"){
         var initialBayerMatrix=[[0,2],[3,1]]
         var initialBayerMatrixSize = 2
         var oneOverFac = 4
 
-
         if(algorithm =="bayer_44"){
             oneOverFac = 16
             matrix = Array(4).fill(null).map(() => Array(4).fill(0));
+        }
+        if(algorithm =="bayer_22"){
+            matrix = divide(initialBayerMatrix, oneOverFac)
+        }
+
+        if(algorithm != "bayer_22"){
             for(let y = 0; y < initialBayerMatrixSize; y++){
                 for( let x = 0; x < initialBayerMatrixSize; x++){
                     var cell = initialBayerMatrix[y][x]
@@ -127,9 +132,6 @@ const dithering = (imgCnvs,algorithm, color, multiplier) =>{
                 }
             }
             matrix = divide(matrix, oneOverFac)
-        }
-        if(algorithm =="bayer_22"){
-            matrix = divide(initialBayerMatrix, oneOverFac)
         }
         console.log(matrix)
 

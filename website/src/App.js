@@ -36,6 +36,11 @@ function App() {
 
   const handleSelectedDitheringOption = () =>{
     let algorithm = document.getElementById("ditheringDropdown").value
+
+    if(algorithm != "Floyd-Steinberg dithering"){
+      document.getElementById("ditheringMultiplierContainer").style.display ="none"
+    }
+    
     if(algorithm == "Floyd–Steinberg dithering"){
       document.getElementById("ditheringMultiplierContainer").style.display ="block"
       setSelectedDithering({
@@ -46,7 +51,6 @@ function App() {
       })
     }
     if(algorithm == "Ordered dithering Bayer 2x2"){
-      document.getElementById("ditheringMultiplierContainer").style.display ="none"
       setSelectedDithering({
         label: "Ordered dithering Bayer 2x2",
         value: "bayer_22",
@@ -55,7 +59,6 @@ function App() {
       })
     }
     if(algorithm == "Ordered dithering Bayer 4x4"){
-      document.getElementById("ditheringMultiplierContainer").style.display ="none"
       setSelectedDithering({
         label: "Ordered dithering Bayer 4x4",
         value: "bayer_44",
