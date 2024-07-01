@@ -1,7 +1,7 @@
 import {getPixel, setPixel} from "./pixelOperations"
 import {divide, matrix} from "mathjs"
 
-const dithering = (imgCnvs,algorithm) =>{
+const dithering = (imgCnvs,algorithm, color) =>{
     var ctx = imgCnvs.getContext("2d")
     var idt = ctx.getImageData(0,0,imgCnvs.width,imgCnvs.height);
     var matrix
@@ -42,27 +42,27 @@ const dithering = (imgCnvs,algorithm) =>{
                 let matPosX = x % matrix.length
                 let matPosY = y % matrix.length
 
-                for(let i = 0; i<3; i++){
+                if(color){
+                    for(let i = 0; i<3; i++){
+                        let d = matrix[matPosX][matPosY]*256
+                        if(currentPixel[i] <= d){
+                            idt.data[(y*idt.width+x)*4+i] = 0
+                        }else{
+                            idt.data[(y*idt.width+x)*4+i] = 255
+                        }
+                    }
+                }else{
                     let d = matrix[matPosX][matPosY]*256
-                    if(currentPixel[i] <= d){
-                        idt.data[(y*idt.width+x)*4+i] = 0
+                    if(currentPixel[0] <= d && currentPixel[1] <=d &&  currentPixel[2] <=d){
+                        idt.data[(y*idt.width+x)*4] = 0
+                        idt.data[(y*idt.width+x)*4+1] = 0
+                        idt.data[(y*idt.width+x)*4+2] = 0
                     }else{
-                        idt.data[(y*idt.width+x)*4+i] = 255
+                        idt.data[(y*idt.width+x)*4] = 255
+                        idt.data[(y*idt.width+x)*4+1] = 255
+                        idt.data[(y*idt.width+x)*4+2] = 255
                     }
                 }
-                
-                /* Greyscale
-                let d = matrix[matPosX][matPosY]*256
-                if(currentPixel[0] <= d && currentPixel[1] <=d &&  currentPixel[2] <=d){
-                    idt.data[(y*idt.width+x)*4] = 0
-                    idt.data[(y*idt.width+x)*4+1] = 0
-                    idt.data[(y*idt.width+x)*4+2] = 0
-                }else{
-                    idt.data[(y*idt.width+x)*4] = 255
-                    idt.data[(y*idt.width+x)*4+1] = 255
-                    idt.data[(y*idt.width+x)*4+2] = 255
-                }
-                */
             }
         }
         ctx.putImageData(idt,0,0) 
