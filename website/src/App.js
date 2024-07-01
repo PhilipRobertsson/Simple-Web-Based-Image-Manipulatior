@@ -53,7 +53,7 @@ function App() {
           handleMenuChange()
         }
         if(e.code == "Space"){
-          dithering(imageCanvas,"bayer_22", false)
+          dithering(imageCanvas,"floyd", false)
           setSelectedImage(imageCanvas.toDataURL())
         }
       }
